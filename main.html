@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <style>
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .m-negative {
+      margin-top: -41px;
+    }
+
+    .b-border-increase {
+      border-left: 3px solid white;
+      height: 67.66%;
+    }
+
+    .b-border-decrease {
+      border-right: 3px solid white;
+      height: 67.66%;
+    }
+
+    .b-bottom-left1 {
+      border-bottom: 3px solid white;
+      margin-left: -34%;
+      margin-bottom: -2.33%;
+    }
+
+    .b-bottom-right1 {
+      border-bottom: 3px solid white;
+      margin-right: -34%;
+      margin-top: -2.33%;
+    }
+
+    .row-border {
+      border-top: 2px dashed rgba(0, 0, 0, .3);
+
+    }
+
+    .lr-border1 {
+      border: 3px solid white;
+    }
+
+    .y-row {
+      margin-bottom: 16%;
+    }
+
+    .y-axis {
+      margin-top: -30%;
+    }
+
+    .upper-radius {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .lower-radius {
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    .p-null {
+      padding-left: 0.25px !important;
+      padding-right: 0.25px !important;
+    }
+
+    .vertical {
+      border-left: 3px solid black;
+      height: 125%;
+      position: absolute;
+      left: 90%;
+      margin-top: -92%;
+    }
+
+    .rotate-90-left {
+      transform: rotate(-90deg);
+    }
+
+    hr.line {
+      border: 1px solid black;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="container mb-5 text-center content-center">
+    <div class="content-center ">
+      <h4>Employees Increase and Decrease</h4>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-2 col-sm-1"></div>
+      <div class="col-lg-4 col-sm-10 col-md-8 content-center">
+        <div class="row">
+          <div class="col-1 content-right">
+            <div class="card bg-danger" style="width: 20px;height: 20px;">
+            </div>
+          </div>
+          <div class="col-3 content-left">
+            Decreased
+          </div>
+          <div class="col-1 mr-0">
+            <div class="card bg-primary" style="width: 20px;height: 20px;">
+            </div>
+          </div>
+          <div class="col-3 ml-0">
+            Total
+          </div>
+          <div class="col-1">
+            <div class="card bg-success" style="width: 20px;height: 20px;">
+            </div>
+          </div>
+          <div class="col-3">
+            Increased
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row mt-5">
+      <div class="col-1 mt-0 p-0 " style="height: absolute;">
+        <div class="rotate-90-left p-0">
+          <h6>Total Count</h6>
+        </div>
+        <div class="vertical"></div>
+      </div>
+
+      <div class="col-1  " id="yaxis">
+
+      </div>
+      <div class="col-10 " id="chartbody">
+      </div>
+    </div>
+    <div class="row mb-5" style="margin-left: -0.65%;">
+      <div class="col-1"></div>
+      <div class="col-11 mb-5">
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-11">
+            <div class="row bg-light border" id="Xaxis">
+
+            </div>
+            <div class="row">
+              <hr class="line">
+            </div>
+            <div class="row">
+              <div class="col content-center">
+                <h6>Months Count</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    const data2 = [
+      { increased: 30, total: 120, decreased: 10 },
+      { increased: 50, total: 165, decreased: 5 },
+      { increased: 20, total: 185, decreased: 0 },
+      { increased: 10, total: 190, decreased: 5 },
+      { increased: 0, total: 180, decreased: 10 },
+      { increased: 20, total: 196, decreased: 4 },
+      { increased: 15, total: 204, decreased: 7 },
+      { increased: 7, total: 209, decreased: 2 }
+    ];
+    const title = 'Employees Increase and Decrease';
+    const monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const monthsList2 = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'];
+    const weeks = ['week1', 'week2', 'week3', 'week4'];
+    drawChart(data2, monthsList2);
+    //drawChart(data3,weeks);
+
+
+    // data contains the list of objects {increased:value,total:value,decreased:value }
+    function drawChart(data = [], x_axis_list = []) {
+      let sorted = JSON.parse(JSON.stringify(data));
+      sorted = sorted.sort((a, b) => b.total - a.total);
+      // set the Y-axis 
+      getYaxis(sorted);
+
+      // place the cards on the Graph 
+      var chartBody = document.getElementById('chartbody');
+      chartBody.innerHTML = '';
+      var newElement = document.createElement('div');
+      for (let i = 0; i < 12 && i < x_axis_list.length; i++) {
+        let xIndex = data.findIndex(x => x.total === sorted[i].total);
+        newElement.innerHTML = newElement.innerHTML + '<div class="row  row-border m-negative">' + getEmpty(xIndex, i) + getCard(data[xIndex]);
+        newElement.innerHTML = newElement.innerHTML + '</div>';
+      }
+      chartBody.appendChild(newElement);
+
+      // Set X-axis 
+      getXaxis(x_axis_list);
+
+    }
+
+    function getEmpty(size, row) {
+
+      let emptyString = '';
+      for (let i = 0; i < size; i++) {
+        if (i === size - 1) {
+          emptyString = emptyString + '<div class="col-1 lr-border"><div class="row"></div><div class="row"></div></div>'
+        } else {
+          emptyString = emptyString + '<div class="col-1 b-right "></div>'
+        }
+      }
+      return emptyString;
+    }
+    function getCard(obj = {}) {
+      let divCode = '<div class="col-1 p-null">' +
+        '<div class="card text-light text-center p-0">';
+      if (obj.increased !== 0) {
+        divCode = divCode + '<div class="card-header upper-radius bg-success p-0" data-toggle="tooltip" data-placement="top" title="Employees Increased :' + obj.increased + '">' + obj.increased + '</div>';
+      } else {
+        divCode = divCode + '<div class="card-header upper-radius  p-0" data-toggle="tooltip" data-placement="top" title="Employees Increased :' + obj.increased + '">.</div>';
+      }
+      divCode = divCode + '<div class="card-body bg-primary p-0" data-toggle="tooltip" data-placement="right" title="Employees Total :' + obj.total + '">' + obj.total + '</div>';
+      if (obj.decreased !== 0) {
+        divCode = divCode + '<div class="card-footer lower-radius bg-danger p-0" data-toggle="tooltip" data-placement="bottom" title="Employee Decreased :' + obj.decreased + '">' + obj.decreased + '</div>';
+      } else {
+        divCode = divCode + '<div class="card-footer lower-radius p-0" data-toggle="tooltip" data-placement="bottom" title="Employee Decreased :' + obj.decreased + '">.</div>';
+      }
+      divCode = divCode + '</div>' +
+        '</div>';
+      return divCode;
+    }
+
+
+    function getYaxisCard(obj = {}) {
+      let divCode = '<div class="col-8 p-null ">' +
+        '<div class="card text-light text-center p-0">' +
+        '<div class="card-header  p-0" ></div>' +
+        '<div class="card-body bg-primary p-0" data-toggle="tooltip" data-placement="right" title="Employees Total :' + obj.total + '">' + obj.total + '</div>' +
+        '<div class="card-footer p-0" ></div>' +
+        '</div>' +
+        '</div>';
+      return divCode;
+    }
+
+    function getYaxis(sorted = []) {
+
+      var p = document.getElementById('yaxis');
+      var newElement = document.createElement('div');
+      newElement.className = newElement.className + 'y-axis'
+      for (let i = 0; i < 12 && i < sorted.length; i++) {
+        newElement.innerHTML = newElement.innerHTML + '<div class="row y-row">' + getYaxisCard(sorted[i]) + '</div>';
+      }
+      p.appendChild(newElement);
+    }
+
+    function getNumberCard() {
+      let divCode = '<div class="col-1">' +
+        '<div class="card text-light text-center p-0" >' +
+        '<div class="card-header p-0"></div>' +
+        '<div class="card-body bg-primary p-0">60%</div>' +
+        '<div class="card-footer p-0"></div>' +
+        '</div>' +
+        '</div>';
+      return divCode;
+    }
+
+    function getXaxis(x_axis_list = []) {
+      var p = document.getElementById('Xaxis');
+      for (let i = 0; i < 12 && i < x_axis_list.length; i++) {
+        p.innerHTML = p.innerHTML + '<div class="col-1 p-null text-center">' +
+          '<div class="card p-0"><div class"card-header p-0 m-0">' +
+          x_axis_list[i] + '</div></div></div>';
+      }
+    }
+
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
